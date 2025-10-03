@@ -77,12 +77,11 @@ DELETE /dds/api/money_movements/{id}/ - Удаление операции
 ```
 Справочники:
 
-```http
-/dds/api/statuses/ - Управление статусами
-/dds/api/operation_types/ - Управление типами операций
-/dds/api/categories/ - Управление категориями
-/dds/api/subcategories - Управление подкатегориями
-```
+* /dds/api/statuses/ - Управление статусами
+* /dds/api/operation_types/ - Управление типами операций
+* /dds/api/categories/ - Управление категориями
+* /dds/api/subcategories - Управление подкатегориями
+
 Документация API
 
 * Swagger UI: http://localhost:8000/dds/api/schema/swagger/
