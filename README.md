@@ -81,7 +81,7 @@ DELETE /dds/api/money_movements/{id}/ - Удаление операции
 /dds/api/statuses/ - Управление статусами
 /dds/api/operation_types/ - Управление типами операций
 /dds/api/categories/ - Управление категориями
-/dds/api/subcategories/ - Управление подкатегориями
+/dds/api/subcategories - Управление подкатегориями
 ```
 Документация API
 
