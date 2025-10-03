@@ -218,6 +218,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     http_method_names = ['get', 'post', 'put', 'delete', ]
 
+    def get_queryset(self):
+        """Оптимизация запросов с select_related"""
+        return Category.objects.all().select_related('operation_type')
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -289,6 +293,13 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     http_method_names = ['get', 'post', 'put', 'delete', ]
 
+    def get_queryset(self):
+        """Оптимизация запросов с select_related"""
+        return Subcategory.objects.all().select_related(
+            'category',
+            'category__operation_type'
+        )
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -353,7 +364,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
                 'Пример успешного ответа',
                 value={
                     "count": 150,
-                    "next": "http://localhost:8000/api/money-movements/?page=2",
+                    "next": "http://localhost:8000/api/money_movements/?page=2",
                     "previous": None,
                     "results": [
                         {
@@ -375,7 +386,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
                 status_codes=['200']
             )
         ],
-        tags=['money-movements']
+        tags=['money_movements']
     ),
     create=extend_schema(
         summary="Создать новую операцию ДДС",
@@ -407,7 +418,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
                 status_codes=['400']
             )
         ],
-        tags=['money-movements']
+        tags=['money_movements']
     ),
     retrieve=extend_schema(
         summary="Получить операцию ДДС по ID",
@@ -416,7 +427,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             200: MoneyMovementSerializer,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money-movements']
+        tags=['money_movements']
     ),
     update=extend_schema(
         summary="Обновить операцию ДДС",
@@ -426,7 +437,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             400: MONEY_MOVEMENT_BAD_REQUEST,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money-movements']
+        tags=['money_movements']
     ),
     partial_update=extend_schema(
         summary="Частично обновить операцию ДДС",
@@ -436,7 +447,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             400: MONEY_MOVEMENT_BAD_REQUEST,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money-movements']
+        tags=['money_movements']
     ),
     destroy=extend_schema(
         summary="Удалить операцию ДДС",
@@ -445,7 +456,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             204: OpenApiResponse(description="Удалено успешно"),
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money-movements']
+        tags=['money_movements']
     ),
 )
 class MoneyMovementViewSet(viewsets.ModelViewSet):
@@ -461,3 +472,13 @@ class MoneyMovementViewSet(viewsets.ModelViewSet):
     search_fields = ['comment', 'subcategory__name', 'category__name']
     ordering_fields = ['created_date', 'amount']
     ordering = ['-created_date']
+
+    def get_queryset(self):
+        """Оптимизация запроса с select_related для уменьшения количества SQL запросов"""
+
+        return super().get_queryset().select_related(
+            'status',
+            'operation_type',
+            'category',
+            'subcategory',
+        )

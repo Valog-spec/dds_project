@@ -1,6 +1,8 @@
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiResponse, OpenApiExample
 
+
+# Общие ответы для ошибок API
 BAD_REQUEST_RESPONSE = OpenApiResponse(
     response=OpenApiTypes.OBJECT,
     description="Некорректный запрос - ошибки валидации",

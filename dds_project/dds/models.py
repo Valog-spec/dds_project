@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 
 class Status(models.Model):
+    """Модель статусов операций"""
     name = models.CharField(max_length=100, unique=True, verbose_name="Название статуса")
     description = models.TextField(blank=True, verbose_name="Описание")
 
@@ -17,6 +18,7 @@ class Status(models.Model):
 
 
 class OperationType(models.Model):
+    """Модель типов операций"""
     name = models.CharField(max_length=100, unique=True, verbose_name="Тип операции")
     description = models.TextField(blank=True, verbose_name="Описание")
 
@@ -29,6 +31,7 @@ class OperationType(models.Model):
 
 
 class Category(models.Model):
+    """Модель категорий операций"""
     name = models.CharField(max_length=100, verbose_name="Название категории")
     operation_type = models.ForeignKey(OperationType, on_delete=models.CASCADE, verbose_name="Тип операции",
                                        related_name="category")
@@ -37,13 +40,14 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
-        unique_together = ['name', 'operation_type']
+        unique_together = ['name', 'operation_type']  # Уникальность в рамках типа операции
 
     def __str__(self):
         return f"{self.name} ({self.operation_type})"
 
 
 class Subcategory(models.Model):
+    """Модель подкатегорий операций"""
     name = models.CharField(max_length=100, verbose_name="Название подкатегории")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория",
                                  related_name="subcategory")
@@ -52,13 +56,14 @@ class Subcategory(models.Model):
     class Meta:
         verbose_name = "Подкатегория"
         verbose_name_plural = "Подкатегории"
-        unique_together = ['name', 'category']
+        unique_together = ['name', 'category']  # Уникальность в рамках категории
 
     def __str__(self):
         return f"{self.name} ({self.category})"
 
 
 class MoneyMovement(models.Model):
+    """Основная модель - движение денежных средств"""
     created_date = models.DateTimeField(default=timezone.now, verbose_name="Дата создания",
                                         null=False,
                                         blank=False
@@ -82,7 +87,7 @@ class MoneyMovement(models.Model):
     amount = models.DecimalField(
         max_digits=15,
         decimal_places=2,
-        validators=[MinValueValidator(0.01)],
+        validators=[MinValueValidator(0.01)],  # Валидация минимальной суммы
         verbose_name="Сумма",
         null=False,
         blank=False
@@ -92,16 +97,18 @@ class MoneyMovement(models.Model):
     class Meta:
         verbose_name = "Движение денежных средств"
         verbose_name_plural = "Движения денежных средств"
-        ordering = ['-created_date']
+        ordering = ['-created_date']  # Сортировка по дате создания (новые сверху)
 
     def clean(self):
+        """Серверная валидация бизнес-правил"""
 
+        # Проверка что категория принадлежит выбранному типу операции
         if hasattr(self, 'category') and self.category and hasattr(self, 'operation_type') and self.operation_type:
             if self.category.operation_type != self.operation_type:
                 raise ValidationError({
                     'category': 'Категория должна принадлежать выбранному типу операции.'
                 })
-
+        # Проверка что подкатегория принадлежит выбранной категории
         if hasattr(self, 'subcategory') and self.subcategory and hasattr(self, 'category') and self.category:
             if self.subcategory.category != self.category:
                 raise ValidationError({
@@ -109,6 +116,7 @@ class MoneyMovement(models.Model):
                 })
 
     def save(self, *args, **kwargs):
+        """Переопределение save для гарантии выполнения валидации"""
 
         self.full_clean()
         super().save(*args, **kwargs)
