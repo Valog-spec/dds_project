@@ -1,0 +1,23 @@
+[project]
+name = "dds_project"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    { name = "Виктор Сагалаков", email = "sagalakov.viktor@gmail.com" },
+]
+dependencies = ["django>=5.2.7",
+    "drf-spectacular>=0.28.0",
+    "djangorestframework>=3.16.1",
+    "django-filter>=25.1",
+    "django-autocomplete-light>=3.12.1"]
+requires-python = ">=3.13"
+readme = "README.md"
+license = { text = "MIT" }
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
