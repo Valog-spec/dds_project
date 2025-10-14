@@ -28,8 +28,14 @@
 ```
 ### 2. Установка PDM и зависисмостей
 ```bash
-  pip install pdm
-  pdm install
+
+# Для macOS и Linux
+pip3 install pdm
+
+# Для Windows
+pip install pdm
+
+pdm install
 ```
 ### 3. Настройка базы данных
 ```bash
