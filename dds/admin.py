@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .forms import TransactionForm
-from .models import Status, OperationType, Category, Subcategory, Transaction
+from .models import Category, OperationType, Status, Subcategory, Transaction
 
 
 class SubcategoryInline(admin.TabularInline):
@@ -9,6 +9,7 @@ class SubcategoryInline(admin.TabularInline):
     Inline для отображения подкатегорий внутри категории
     Позволяет управлять подкатегориями прямо из формы категории
     """
+
     model = Subcategory
     extra = 1
     fields = ["name", "description"]
@@ -19,6 +20,7 @@ class CategoryInline(admin.TabularInline):
     Inline для отображения категорий внутри типа операции
     Позволяет управлять категориями прямо из формы типа операции
     """
+
     model = Category
     extra = 1
     fields = ["name", "description"]
@@ -32,6 +34,7 @@ class StatusAdmin(admin.ModelAdmin):
     """
     Админка для управления статусами операций
     """
+
     list_display = ["name", "description"]
     search_fields = ["name"]
 
@@ -41,6 +44,7 @@ class OperationTypeAdmin(admin.ModelAdmin):
     """
     Админка для управления типами операций
     """
+
     list_display = ["name", "description", "category_count"]
     search_fields = ["name"]
 
@@ -57,6 +61,7 @@ class CategoryAdmin(admin.ModelAdmin):
     """
     Админка для управления категориями
     """
+
     list_display = ["name", "operation_type", "description", "subcategory_count"]
     list_filter = ["operation_type"]
     search_fields = ["name"]
@@ -70,7 +75,7 @@ class CategoryAdmin(admin.ModelAdmin):
         """Отображение количества подкатегорий для категории"""
         return obj.subcategory.count()
 
-    subcategory_count.short_description = 'Количество подкатегорий'
+    subcategory_count.short_description = "Количество подкатегорий"
 
 
 @admin.register(Subcategory)
@@ -78,13 +83,18 @@ class SubcategoryAdmin(admin.ModelAdmin):
     """
     Админка для управления подкатегориями
     """
+
     list_display = ["name", "category", "operation_type", "description"]
     list_filter = ["category__operation_type", "category"]
-    search_fields = ['name']
+    search_fields = ["name"]
 
     def get_queryset(self, request):
         """Оптимизация запроса с select_related"""
-        return super().get_queryset(request).select_related("category", "category__operation_type")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("category", "category__operation_type")
+        )
 
     def operation_type(self, obj):
         """Отображение типа операции через категорию"""
@@ -98,6 +108,7 @@ class MoneyMovementAdmin(admin.ModelAdmin):
     """
     Админка для управления движениями денежных средств
     """
+
     form = TransactionForm  # Кастомная форма с autocomplete
     list_display = [
         "created_date",
@@ -106,18 +117,18 @@ class MoneyMovementAdmin(admin.ModelAdmin):
         "category",
         "subcategory",
         "amount",
-        "comment_short"
+        "comment_short",
     ]
     list_filter = [
         "created_date",
         "status",
         "operation_type",
         "category",
-        "subcategory"
+        "subcategory",
     ]
     search_fields = ["comment", "subcategory__name", "category__name"]
-    date_hierarchy = "created_date" # Иерархическая навигация по датам
-    list_per_page = 20 # Пагинация
+    date_hierarchy = "created_date"  # Иерархическая навигация по датам
+    list_per_page = 20  # Пагинация
 
     def comment_short(self, obj):
         """Сокращенное отображение комментария в списке"""
@@ -127,14 +138,18 @@ class MoneyMovementAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         """Оптимизация запроса с select_related"""
-        return super().get_queryset(request).select_related(
-            "status",
-            "operation_type",
-            "category",
-            "subcategory",
+        return (
+            super()
+            .get_queryset(request)
+            .select_related(
+                "status",
+                "operation_type",
+                "category",
+                "subcategory",
+            )
         )
 
     def get_changelist_form(self, request, **kwargs):
-        """ Переопределение метода для использования кастомной формы в changelist"""
+        """Переопределение метода для использования кастомной формы в changelist"""
         kwargs["form"] = TransactionForm
         return super().get_changelist_form(request, **kwargs)

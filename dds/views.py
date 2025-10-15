@@ -1,17 +1,28 @@
-from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse, OpenApiExample, OpenApiParameter
-from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Status, OperationType, Category, Subcategory, Transaction
-from .responses import BAD_REQUEST_RESPONSE, MONEY_MOVEMENT_BAD_REQUEST, NOT_FOUND_RESPONSE
-from .serializers import (
-    StatusSerializer,
-    OperationTypeSerializer,
-    CategorySerializer,
-    SubcategorySerializer,
-    TransactionSerializer
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+    extend_schema_view,
 )
+from rest_framework import filters, viewsets
+
 from .filters import TransactionFilter
+from .models import Category, OperationType, Status, Subcategory, Transaction
+from .responses import (
+    BAD_REQUEST_RESPONSE,
+    MONEY_MOVEMENT_BAD_REQUEST,
+    NOT_FOUND_RESPONSE,
+)
+from .serializers import (
+    CategorySerializer,
+    OperationTypeSerializer,
+    StatusSerializer,
+    SubcategorySerializer,
+    TransactionSerializer,
+)
 
 
 @extend_schema_view(
@@ -21,7 +32,7 @@ from .filters import TransactionFilter
         responses={
             200: StatusSerializer(many=True),
         },
-        tags=['statuses']
+        tags=["statuses"],
     ),
     create=extend_schema(
         summary="Создать новый статус",
@@ -30,7 +41,7 @@ from .filters import TransactionFilter
             201: StatusSerializer,
             400: BAD_REQUEST_RESPONSE,
         },
-        tags=['statuses']
+        tags=["statuses"],
     ),
     retrieve=extend_schema(
         summary="Получить статус по ID",
@@ -39,7 +50,7 @@ from .filters import TransactionFilter
             200: StatusSerializer,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['statuses']
+        tags=["statuses"],
     ),
     update=extend_schema(
         summary="Обновить статус",
@@ -49,7 +60,7 @@ from .filters import TransactionFilter
             400: BAD_REQUEST_RESPONSE,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['statuses']
+        tags=["statuses"],
     ),
     partial_update=extend_schema(
         summary="Частично обновить статус",
@@ -59,7 +70,7 @@ from .filters import TransactionFilter
             400: BAD_REQUEST_RESPONSE,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['statuses']
+        tags=["statuses"],
     ),
     destroy=extend_schema(
         summary="Удалить статус",
@@ -68,15 +79,16 @@ from .filters import TransactionFilter
             204: OpenApiResponse(description="Удалено успешно"),
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['statuses']
+        tags=["statuses"],
     ),
 )
 class StatusViewSet(viewsets.ModelViewSet):
     """CRUD API для управления статусами операций"""
+
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
+    search_fields = ["name"]
 
 
 @extend_schema_view(
@@ -86,7 +98,7 @@ class StatusViewSet(viewsets.ModelViewSet):
         responses={
             200: OperationTypeSerializer(many=True),
         },
-        tags=['operation_types']
+        tags=["operation_types"],
     ),
     create=extend_schema(
         summary="Создать новый тип операции",
@@ -95,7 +107,7 @@ class StatusViewSet(viewsets.ModelViewSet):
             201: OperationTypeSerializer,
             400: BAD_REQUEST_RESPONSE,
         },
-        tags=['operation_types']
+        tags=["operation_types"],
     ),
     retrieve=extend_schema(
         summary="Получить тип операции по ID",
@@ -104,7 +116,7 @@ class StatusViewSet(viewsets.ModelViewSet):
             200: OperationTypeSerializer,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['operation_types']
+        tags=["operation_types"],
     ),
     update=extend_schema(
         summary="Обновить тип операции",
@@ -114,7 +126,7 @@ class StatusViewSet(viewsets.ModelViewSet):
             400: BAD_REQUEST_RESPONSE,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['operation_types']
+        tags=["operation_types"],
     ),
     destroy=extend_schema(
         summary="Удалить тип операции",
@@ -123,16 +135,22 @@ class StatusViewSet(viewsets.ModelViewSet):
             204: OpenApiResponse(description="Удалено успешно"),
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['operation_types']
+        tags=["operation_types"],
     ),
 )
 class OperationTypeViewSet(viewsets.ModelViewSet):
     """CRUD API для управления типами операций"""
+
     queryset = OperationType.objects.all()
     serializer_class = OperationTypeSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
-    http_method_names = ['get', 'post', 'put', 'delete', ]
+    search_fields = ["name"]
+    http_method_names = [
+        "get",
+        "post",
+        "put",
+        "delete",
+    ]
 
 
 @extend_schema_view(
@@ -141,16 +159,16 @@ class OperationTypeViewSet(viewsets.ModelViewSet):
         description="Возвращает список категорий с фильтрацией по типу операции",
         parameters=[
             OpenApiParameter(
-                name='operation_type',
+                name="operation_type",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по типу операции'
+                description="Фильтр по типу операции",
             ),
         ],
         responses={
             200: CategorySerializer(many=True),
         },
-        tags=['categories']
+        tags=["categories"],
     ),
     create=extend_schema(
         summary="Создать новую категорию",
@@ -165,20 +183,20 @@ class OperationTypeViewSet(viewsets.ModelViewSet):
                 value={
                     "name": "Новая категория",
                     "operation_type": 1,
-                    "description": "Описание категории"
+                    "description": "Описание категории",
                 },
-                status_codes=['201']
+                status_codes=["201"],
             ),
             OpenApiExample(
                 "Пример ошибки",
                 value={
                     "name": ["category с такими name и operation_type уже существует."],
-                    "operation_type": ["Обязательное поле."]
+                    "operation_type": ["Обязательное поле."],
                 },
-                status_codes=['400']
-            )
+                status_codes=["400"],
+            ),
         ],
-        tags=['categories']
+        tags=["categories"],
     ),
     retrieve=extend_schema(
         summary="Получить категорию по ID",
@@ -187,7 +205,7 @@ class OperationTypeViewSet(viewsets.ModelViewSet):
             200: CategorySerializer,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['categories']
+        tags=["categories"],
     ),
     update=extend_schema(
         summary="Обновить категорию",
@@ -197,7 +215,7 @@ class OperationTypeViewSet(viewsets.ModelViewSet):
             400: BAD_REQUEST_RESPONSE,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['categories']
+        tags=["categories"],
     ),
     destroy=extend_schema(
         summary="Удалить категорию",
@@ -206,21 +224,27 @@ class OperationTypeViewSet(viewsets.ModelViewSet):
             204: OpenApiResponse(description="Удалено успешно"),
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['categories']
+        tags=["categories"],
     ),
 )
 class CategoryViewSet(viewsets.ModelViewSet):
     """CRUD API для управления категориями операций"""
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['operation_type']
-    search_fields = ['name']
-    http_method_names = ['get', 'post', 'put', 'delete', ]
+    filterset_fields = ["operation_type"]
+    search_fields = ["name"]
+    http_method_names = [
+        "get",
+        "post",
+        "put",
+        "delete",
+    ]
 
     def get_queryset(self):
         """Оптимизация запросов с select_related"""
-        return Category.objects.all().select_related('operation_type')
+        return Category.objects.all().select_related("operation_type")
 
 
 @extend_schema_view(
@@ -229,22 +253,22 @@ class CategoryViewSet(viewsets.ModelViewSet):
         description="Возвращает список подкатегорий с фильтрацией по категории и типу операции",
         parameters=[
             OpenApiParameter(
-                name='category',
+                name="category",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по категории'
+                description="Фильтр по категории",
             ),
             OpenApiParameter(
-                name='category__operation_type',
+                name="category__operation_type",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по типу операции через категорию'
-            )
+                description="Фильтр по типу операции через категорию",
+            ),
         ],
         responses={
             200: SubcategorySerializer(many=True),
         },
-        tags=['sybcategories']
+        tags=["sybcategories"],
     ),
     create=extend_schema(
         summary="Создать новую подкатегорию",
@@ -253,7 +277,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             201: SubcategorySerializer,
             400: BAD_REQUEST_RESPONSE,
         },
-        tags=['sybcategories']
+        tags=["sybcategories"],
     ),
     retrieve=extend_schema(
         summary="Получить подкатегорию по ID",
@@ -262,7 +286,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             200: SubcategorySerializer,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['sybcategories']
+        tags=["sybcategories"],
     ),
     update=extend_schema(
         summary="Обновить подкатегорию",
@@ -272,7 +296,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             400: BAD_REQUEST_RESPONSE,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['sybcategories']
+        tags=["sybcategories"],
     ),
     destroy=extend_schema(
         summary="Удалить подкатегорию",
@@ -281,23 +305,28 @@ class CategoryViewSet(viewsets.ModelViewSet):
             204: OpenApiResponse(description="Удалено успешно"),
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['sybcategories']
+        tags=["sybcategories"],
     ),
 )
 class SubcategoryViewSet(viewsets.ModelViewSet):
     """CRUD API для управления подкатегориями операций"""
+
     queryset = Subcategory.objects.all()
     serializer_class = SubcategorySerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['category', 'category__operation_type']
-    search_fields = ['name']
-    http_method_names = ['get', 'post', 'put', 'delete', ]
+    filterset_fields = ["category", "category__operation_type"]
+    search_fields = ["name"]
+    http_method_names = [
+        "get",
+        "post",
+        "put",
+        "delete",
+    ]
 
     def get_queryset(self):
         """Оптимизация запросов с select_related"""
         return Subcategory.objects.all().select_related(
-            'category',
-            'category__operation_type'
+            "category", "category__operation_type"
         )
 
 
@@ -307,52 +336,52 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
         description="Возвращает список операций движения денежных средств с поддержкой фильтрации, поиска и сортировки",
         parameters=[
             OpenApiParameter(
-                name='created_date_after',
+                name="created_date_after",
                 type=OpenApiTypes.DATE,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по дате начала периода (YYYY-MM-DD)'
+                description="Фильтр по дате начала периода (YYYY-MM-DD)",
             ),
             OpenApiParameter(
-                name='created_date_before',
+                name="created_date_before",
                 type=OpenApiTypes.DATE,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по дате окончания периода (YYYY-MM-DD)'
+                description="Фильтр по дате окончания периода (YYYY-MM-DD)",
             ),
             OpenApiParameter(
-                name='status',
+                name="status",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по статусу'
+                description="Фильтр по статусу",
             ),
             OpenApiParameter(
-                name='operation_type',
+                name="operation_type",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по типу операции'
+                description="Фильтр по типу операции",
             ),
             OpenApiParameter(
-                name='category',
+                name="category",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по категории'
+                description="Фильтр по категории",
             ),
             OpenApiParameter(
-                name='subcategory',
+                name="subcategory",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
-                description='Фильтр по подкатегории'
+                description="Фильтр по подкатегории",
             ),
             OpenApiParameter(
-                name='search',
+                name="search",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Поиск по комментарию и названиям категорий/подкатегорий'
+                description="Поиск по комментарию и названиям категорий/подкатегорий",
             ),
             OpenApiParameter(
-                name='ordering',
+                name="ordering",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Сортировка (-created_date, created_date, amount, -amount)'
+                description="Сортировка (-created_date, created_date, amount, -amount)",
             ),
         ],
         responses={
@@ -361,7 +390,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
         },
         examples=[
             OpenApiExample(
-                'Пример успешного ответа',
+                "Пример успешного ответа",
                 value={
                     "count": 150,
                     "next": "http://localhost:8000/api/money_movements/?page=2",
@@ -379,14 +408,14 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
                             "subcategory": 5,
                             "subcategory_name": "Avito",
                             "amount": "1500.00",
-                            "comment": "Оплата рекламы"
+                            "comment": "Оплата рекламы",
                         }
-                    ]
+                    ],
                 },
-                status_codes=['200']
+                status_codes=["200"],
             )
         ],
-        tags=['money_movements']
+        tags=["money_movements"],
     ),
     create=extend_schema(
         summary="Создать новую операцию ДДС",
@@ -404,21 +433,21 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
                     "category": 3,
                     "subcategory": 5,
                     "amount": "1500.00",
-                    "comment": "Оплата рекламы в Avito"
+                    "comment": "Оплата рекламы в Avito",
                 },
-                status_codes=['201']
+                status_codes=["201"],
             ),
             OpenApiExample(
                 "Пример ошибки валидации",
                 value={
                     "amount": ["Сумма должна быть больше нуля."],
                     "category": ["Это поле обязательно."],
-                    "subcategory": ["Подкатегория не принадлежит выбранной категории."]
+                    "subcategory": ["Подкатегория не принадлежит выбранной категории."],
                 },
-                status_codes=['400']
-            )
+                status_codes=["400"],
+            ),
         ],
-        tags=['money_movements']
+        tags=["money_movements"],
     ),
     retrieve=extend_schema(
         summary="Получить операцию ДДС по ID",
@@ -427,7 +456,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             200: TransactionSerializer,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money_movements']
+        tags=["money_movements"],
     ),
     update=extend_schema(
         summary="Обновить операцию ДДС",
@@ -437,7 +466,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             400: MONEY_MOVEMENT_BAD_REQUEST,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money_movements']
+        tags=["money_movements"],
     ),
     partial_update=extend_schema(
         summary="Частично обновить операцию ДДС",
@@ -447,7 +476,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             400: MONEY_MOVEMENT_BAD_REQUEST,
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money_movements']
+        tags=["money_movements"],
     ),
     destroy=extend_schema(
         summary="Удалить операцию ДДС",
@@ -456,7 +485,7 @@ class SubcategoryViewSet(viewsets.ModelViewSet):
             204: OpenApiResponse(description="Удалено успешно"),
             404: NOT_FOUND_RESPONSE,
         },
-        tags=['money_movements']
+        tags=["money_movements"],
     ),
 )
 class TransactionViewSet(viewsets.ModelViewSet):
@@ -465,20 +494,29 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
     Позволяет вести учет всех денежных операций с учетом бизнес-правил.
     """
+
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_class = TransactionFilter
-    search_fields = ['comment', 'subcategory__name', 'category__name']
-    ordering_fields = ['created_date', 'amount']
-    ordering = ['-created_date']
+    search_fields = ["comment", "subcategory__name", "category__name"]
+    ordering_fields = ["created_date", "amount"]
+    ordering = ["-created_date"]
 
     def get_queryset(self):
         """Оптимизация запроса с select_related для уменьшения количества SQL запросов"""
 
-        return super().get_queryset().select_related(
-            'status',
-            'operation_type',
-            'category',
-            'subcategory',
+        return (
+            super()
+            .get_queryset()
+            .select_related(
+                "status",
+                "operation_type",
+                "category",
+                "subcategory",
+            )
         )

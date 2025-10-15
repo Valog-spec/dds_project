@@ -1,6 +1,5 @@
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiResponse, OpenApiExample
-
+from drf_spectacular.utils import OpenApiExample, OpenApiResponse
 
 # Общие ответы для ошибок API
 BAD_REQUEST_RESPONSE = OpenApiResponse(
@@ -11,11 +10,11 @@ BAD_REQUEST_RESPONSE = OpenApiResponse(
             "Пример ошибки валидации",
             value={
                 "amount": ["Сумма должна быть больше нуля."],
-                "category": ["Это поле обязательно."]
+                "category": ["Это поле обязательно."],
             },
-            status_codes=['400']
+            status_codes=["400"],
         )
-    ]
+    ],
 )
 
 NOT_FOUND_RESPONSE = OpenApiResponse(
@@ -24,12 +23,10 @@ NOT_FOUND_RESPONSE = OpenApiResponse(
     examples=[
         OpenApiExample(
             "Объект не найден",
-            value={
-                "detail": "Страница не найдена."
-            },
-            status_codes=['404']
+            value={"detail": "Страница не найдена."},
+            status_codes=["404"],
         )
-    ]
+    ],
 )
 
 MONEY_MOVEMENT_BAD_REQUEST = OpenApiResponse(
@@ -40,18 +37,18 @@ MONEY_MOVEMENT_BAD_REQUEST = OpenApiResponse(
             "Ошибка обязательных полей",
             value={
                 "status": ["Это поле обязательно."],
-                "amount": ["Это поле обязательно."]
+                "amount": ["Это поле обязательно."],
             },
-            status_codes=['400']
+            status_codes=["400"],
         ),
         OpenApiExample(
             "Ошибка бизнес-правил",
             value={
                 "amount": ["Сумма должна быть больше нуля."],
                 "category": ["Категория не принадлежит выбранному типу операции."],
-                "subcategory": ["Подкатегория не принадлежит выбранной категории."]
+                "subcategory": ["Подкатегория не принадлежит выбранной категории."],
             },
-            status_codes=['400']
-        )
-    ]
+            status_codes=["400"],
+        ),
+    ],
 )
