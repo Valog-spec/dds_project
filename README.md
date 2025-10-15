@@ -26,7 +26,16 @@
 ```bash
   git clone <url-репозитория>
 ```
-### 2. Установка PDM и зависисмостей
+### 2. Создайте файл `.env` в директории `dds_project/` со следующими параметрами по аналогии example.env:
+
+```env
+DEBUG=True
+SECRET_KEY=your-secret-key-here-change-in-production
+ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+```
+
+### 3. Установка PDM и зависисмостей
 ```bash
 
 # Для macOS и Linux
@@ -37,20 +46,20 @@ pip install pdm
 
 pdm install
 ```
-### 3. Настройка базы данных
+### 4. Настройка базы данных
 ```bash
   pdm run python manage.py makemigrations
   pdm run python manage.py migrate
 ```
-### 4. Создание суперпользователя
+### 5. Создание суперпользователя
 ```bash
   pdm run python manage.py createsuperuser
 ```
-### 5.  Загрузка начальных данных (опционально)
+### 6.  Загрузка начальных данных (опционально)
 ```bash
   pdm run python manage.py initial
 ```
-### 5.  Запуск сервера разработки
+### 7.  Запуск сервера разработки
 ```bash
   pdm run python manage.py runserver
 ```
@@ -93,3 +102,11 @@ DELETE /dds/api/money_movements/{id}/ - Удаление операции
 * Swagger UI: http://localhost:8000/dds/api/schema/swagger/
 * ReDoc: http://localhost:8000/dds/api/schema/redoc/
 * OpenAPI Schema: http://localhost:8000/dds/api/schema/
+
+### Тестирование
+
+```bash
+
+cd dds
+pdm run pytest tests/
+```

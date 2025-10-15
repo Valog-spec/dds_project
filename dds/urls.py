@@ -34,7 +34,7 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger",
     ),
-    path("api/", include(router.urls)),
+    path("api/v1/", include(router.urls)),
     path(
         "category-autocomplete/",
         CategoryAutocomplete.as_view(),

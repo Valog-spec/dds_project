@@ -5,10 +5,27 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:eb84c2344550ff87ce81db2a904741a236ba28c466760801104530b23069078e"
+content_hash = "sha256:ad2322631221212e145069dcefa7f77c6c2220183ec864487e9a68648e6ddb0d"
 
 [[metadata.targets]]
 requires_python = ">=3.13"
+
+[[package]]
+name = "anyio"
+version = "4.11.0"
+requires_python = ">=3.9"
+summary = "High-level concurrency and networking framework on top of asyncio or Trio"
+groups = ["dev"]
+dependencies = [
+    "exceptiongroup>=1.0.2; python_version < \"3.11\"",
+    "idna>=2.8",
+    "sniffio>=1.1",
+    "typing-extensions>=4.5; python_version < \"3.13\"",
+]
+files = [
+    {file = "anyio-4.11.0-py3-none-any.whl", hash = "sha256:0287e96f4d26d4149305414d4e3bc32f0dcd0862365a4bddea19d7a1ec38c4fc"},
+    {file = "anyio-4.11.0.tar.gz", hash = "sha256:82a8d0b81e318cc5ce71a5f1f8b5c4e63619620b63141ef8c995fa0db95a57c4"},
+]
 
 [[package]]
 name = "asgiref"
@@ -61,6 +78,17 @@ files = [
 ]
 
 [[package]]
+name = "certifi"
+version = "2025.10.5"
+requires_python = ">=3.7"
+summary = "Python package for providing Mozilla's CA Bundle."
+groups = ["dev"]
+files = [
+    {file = "certifi-2025.10.5-py3-none-any.whl", hash = "sha256:0f212c2744a9bb6de0c56639a6f68afe01ecd92d91f14ae897c4fe7bbeeef0de"},
+    {file = "certifi-2025.10.5.tar.gz", hash = "sha256:47c09d31ccf2acf0be3f701ea53595ee7e0b8fa08801c6624be771df09ae7b43"},
+]
+
+[[package]]
 name = "click"
 version = "8.3.0"
 requires_python = ">=3.10"
@@ -80,7 +108,7 @@ version = "0.4.6"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 summary = "Cross-platform colored terminal text."
 groups = ["dev"]
-marker = "platform_system == \"Windows\""
+marker = "sys_platform == \"win32\" or platform_system == \"Windows\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -112,6 +140,17 @@ dependencies = [
 ]
 files = [
     {file = "django_autocomplete_light-3.12.1.tar.gz", hash = "sha256:50f7b83681feec6491c38e6114d7a4fe80f9e99a8cc6c8458a3e7bb137ad6b1d"},
+]
+
+[[package]]
+name = "django-environ"
+version = "0.12.0"
+requires_python = "<4,>=3.9"
+summary = "A package that allows you to utilize 12factor inspired environment variables to configure your Django application."
+groups = ["default"]
+files = [
+    {file = "django_environ-0.12.0-py2.py3-none-any.whl", hash = "sha256:92fb346a158abda07ffe6eb23135ce92843af06ecf8753f43adf9d2366dcc0ca"},
+    {file = "django_environ-0.12.0.tar.gz", hash = "sha256:227dc891453dd5bde769c3449cf4a74b6f2ee8f7ab2361c93a07068f4179041a"},
 ]
 
 [[package]]
@@ -163,6 +202,88 @@ files = [
 ]
 
 [[package]]
+name = "factory-boy"
+version = "3.3.3"
+requires_python = ">=3.8"
+summary = "A versatile test fixtures replacement based on thoughtbot's factory_bot for Ruby."
+groups = ["dev"]
+dependencies = [
+    "Faker>=0.7.0",
+]
+files = [
+    {file = "factory_boy-3.3.3-py2.py3-none-any.whl", hash = "sha256:1c39e3289f7e667c4285433f305f8d506efc2fe9c73aaea4151ebd5cdea394fc"},
+    {file = "factory_boy-3.3.3.tar.gz", hash = "sha256:866862d226128dfac7f2b4160287e899daf54f2612778327dd03d0e2cb1e3d03"},
+]
+
+[[package]]
+name = "faker"
+version = "37.11.0"
+requires_python = ">=3.9"
+summary = "Faker is a Python package that generates fake data for you."
+groups = ["dev"]
+dependencies = [
+    "tzdata",
+]
+files = [
+    {file = "faker-37.11.0-py3-none-any.whl", hash = "sha256:1508d2da94dfd1e0087b36f386126d84f8583b3de19ac18e392a2831a6676c57"},
+    {file = "faker-37.11.0.tar.gz", hash = "sha256:22969803849ba0618be8eee2dd01d0d9e2cd3b75e6ff1a291fa9abcdb34da5e6"},
+]
+
+[[package]]
+name = "h11"
+version = "0.16.0"
+requires_python = ">=3.8"
+summary = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+groups = ["dev"]
+files = [
+    {file = "h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"},
+    {file = "h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"},
+]
+
+[[package]]
+name = "httpcore"
+version = "1.0.9"
+requires_python = ">=3.8"
+summary = "A minimal low-level HTTP client."
+groups = ["dev"]
+dependencies = [
+    "certifi",
+    "h11>=0.16",
+]
+files = [
+    {file = "httpcore-1.0.9-py3-none-any.whl", hash = "sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"},
+    {file = "httpcore-1.0.9.tar.gz", hash = "sha256:6e34463af53fd2ab5d807f399a9b45ea31c3dfa2276f15a2c3f00afff6e176e8"},
+]
+
+[[package]]
+name = "httpx"
+version = "0.28.1"
+requires_python = ">=3.8"
+summary = "The next generation HTTP client."
+groups = ["dev"]
+dependencies = [
+    "anyio",
+    "certifi",
+    "httpcore==1.*",
+    "idna",
+]
+files = [
+    {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
+    {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
+]
+
+[[package]]
+name = "idna"
+version = "3.11"
+requires_python = ">=3.8"
+summary = "Internationalized Domain Names in Applications (IDNA)"
+groups = ["dev"]
+files = [
+    {file = "idna-3.11-py3-none-any.whl", hash = "sha256:771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea"},
+    {file = "idna-3.11.tar.gz", hash = "sha256:795dafcc9c04ed0c1fb032c2aa73654d8e8c5023a7df64a53f39190ada629902"},
+]
+
+[[package]]
 name = "inflection"
 version = "0.5.1"
 requires_python = ">=3.5"
@@ -171,6 +292,17 @@ groups = ["default"]
 files = [
     {file = "inflection-0.5.1-py2.py3-none-any.whl", hash = "sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2"},
     {file = "inflection-0.5.1.tar.gz", hash = "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"},
+]
+
+[[package]]
+name = "iniconfig"
+version = "2.1.0"
+requires_python = ">=3.8"
+summary = "brain-dead simple config-ini parsing"
+groups = ["dev"]
+files = [
+    {file = "iniconfig-2.1.0-py3-none-any.whl", hash = "sha256:9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760"},
+    {file = "iniconfig-2.1.0.tar.gz", hash = "sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7"},
 ]
 
 [[package]]
@@ -257,6 +389,78 @@ groups = ["dev"]
 files = [
     {file = "platformdirs-4.5.0-py3-none-any.whl", hash = "sha256:e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3"},
     {file = "platformdirs-4.5.0.tar.gz", hash = "sha256:70ddccdd7c99fc5942e9fc25636a8b34d04c24b335100223152c2803e4063312"},
+]
+
+[[package]]
+name = "pluggy"
+version = "1.6.0"
+requires_python = ">=3.9"
+summary = "plugin and hook calling mechanisms for python"
+groups = ["dev"]
+files = [
+    {file = "pluggy-1.6.0-py3-none-any.whl", hash = "sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746"},
+    {file = "pluggy-1.6.0.tar.gz", hash = "sha256:7dcc130b76258d33b90f61b658791dede3486c3e6bfb003ee5c9bfb396dd22f3"},
+]
+
+[[package]]
+name = "pygments"
+version = "2.19.2"
+requires_python = ">=3.8"
+summary = "Pygments is a syntax highlighting package written in Python."
+groups = ["dev"]
+files = [
+    {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
+    {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
+]
+
+[[package]]
+name = "pytest"
+version = "8.4.2"
+requires_python = ">=3.9"
+summary = "pytest: simple powerful testing with Python"
+groups = ["dev"]
+dependencies = [
+    "colorama>=0.4; sys_platform == \"win32\"",
+    "exceptiongroup>=1; python_version < \"3.11\"",
+    "iniconfig>=1",
+    "packaging>=20",
+    "pluggy<2,>=1.5",
+    "pygments>=2.7.2",
+    "tomli>=1; python_version < \"3.11\"",
+]
+files = [
+    {file = "pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79"},
+    {file = "pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01"},
+]
+
+[[package]]
+name = "pytest-asyncio"
+version = "1.2.0"
+requires_python = ">=3.9"
+summary = "Pytest support for asyncio"
+groups = ["dev"]
+dependencies = [
+    "backports-asyncio-runner<2,>=1.1; python_version < \"3.11\"",
+    "pytest<9,>=8.2",
+    "typing-extensions>=4.12; python_version < \"3.13\"",
+]
+files = [
+    {file = "pytest_asyncio-1.2.0-py3-none-any.whl", hash = "sha256:8e17ae5e46d8e7efe51ab6494dd2010f4ca8dae51652aa3c8d55acf50bfb2e99"},
+    {file = "pytest_asyncio-1.2.0.tar.gz", hash = "sha256:c609a64a2a8768462d0c99811ddb8bd2583c33fd33cf7f21af1c142e824ffb57"},
+]
+
+[[package]]
+name = "pytest-django"
+version = "4.11.1"
+requires_python = ">=3.8"
+summary = "A Django plugin for pytest."
+groups = ["dev"]
+dependencies = [
+    "pytest>=7.0.0",
+]
+files = [
+    {file = "pytest_django-4.11.1-py3-none-any.whl", hash = "sha256:1b63773f648aa3d8541000c26929c1ea63934be1cfa674c76436966d73fe6a10"},
+    {file = "pytest_django-4.11.1.tar.gz", hash = "sha256:a949141a1ee103cb0e7a20f1451d355f83f5e4a5d07bdd4dcfdd1fd0ff227991"},
 ]
 
 [[package]]
@@ -393,6 +597,17 @@ files = [
 ]
 
 [[package]]
+name = "sniffio"
+version = "1.3.1"
+requires_python = ">=3.7"
+summary = "Sniff out which async library your code is running under"
+groups = ["dev"]
+files = [
+    {file = "sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2"},
+    {file = "sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"},
+]
+
+[[package]]
 name = "sqlparse"
 version = "0.5.3"
 requires_python = ">=3.8"
@@ -408,8 +623,7 @@ name = "tzdata"
 version = "2025.2"
 requires_python = ">=2"
 summary = "Provider of IANA time zone data"
-groups = ["default"]
-marker = "sys_platform == \"win32\""
+groups = ["default", "dev"]
 files = [
     {file = "tzdata-2025.2-py2.py3-none-any.whl", hash = "sha256:1a403fada01ff9221ca8044d701868fa132215d84beb92242d9acd2147f667a8"},
     {file = "tzdata-2025.2.tar.gz", hash = "sha256:b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9"},
