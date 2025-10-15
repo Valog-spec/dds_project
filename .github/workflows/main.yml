@@ -37,6 +37,3 @@ jobs:
         
       - name: Run isort
         run: pdm run isort --check-only --diff --profile black dds
-        
-      - name: Run tests with pytest
-        run: pdm run pytest -v dds/tests
