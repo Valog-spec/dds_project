@@ -33,5 +33,4 @@ dev = [
     "factory-boy>=3.3.3",
     "faker>=37.11.0",
     "httpx>=0.28.1",
-    "django-environ>=0.12.0
 ]
